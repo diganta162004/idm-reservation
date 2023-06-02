@@ -1,11 +1,25 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-declare const USE_MOCK_DATA: boolean;
+import { UseApiProvider } from './hooks/useApi';
+import { isMocked } from './utils/CommonUtils';
+import { HomePage } from './features/HomePage';
 
-const App = () => (
-	<div>Plusgrade Tax Calculator</div>
-);
+type Props = {};
+
+type State = {};
+
+class App extends React.PureComponent <Props, State> {
+  render() {
+    return (
+      <UseApiProvider
+        isMocked={isMocked}
+      >
+        <HomePage />
+      </UseApiProvider>
+    );
+  }
+}
 
 const root = createRoot(document.getElementById('root') as Element);
-root.render(App());
+root.render(<App />);

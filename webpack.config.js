@@ -29,6 +29,24 @@ module.exports = (env) => ({
     open: false,
     port: PORT,
     hot: true,
+    proxy: {
+      '/tax-calculator': {
+        target: 'http://localhost:5001',
+        secure: false,
+        changeOrigin: false,
+        headers: {
+          Connection: 'keep-alive',
+          Host: 'localhost:8080',
+        },
+        bypass(
+          req, res, proxyOptions,
+        ) {
+          console.log(
+            'PROXY', req.method, req.url,
+          );
+        },
+      },
+    },
   },
   module: {
     rules: [
