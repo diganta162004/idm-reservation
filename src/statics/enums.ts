@@ -1,0 +1,6 @@
+export enum LOADING_STATUS {
+	NOT_YET_STARTED = 0,
+	LOADING = 1,
+	COMPLETED = 2,
+	FAILED = 3,
+}

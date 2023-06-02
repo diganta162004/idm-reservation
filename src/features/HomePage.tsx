@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
+import React, {
+  useCallback,
+  useState,
+} from 'react';
 
-import { useApi } from '../hooks/useApi';
-import { API_URLS } from '../statics/apiUrls';
+import { useTaxData } from '../hooks/useTaxData';
 
 import './home-page.scss';
 
@@ -10,26 +12,35 @@ const styles = {
 };
 
 const HomePage = () => {
-  const { apiGet } = useApi();
+  const { calculateTax } = useTaxData();
 
-  useEffect(
+  const [yearValue, setYearValue] = useState<string>('');
+
+  const onYearChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setYearValue(e.target.value);
+    }, [],
+  );
+
+  const onCalculateClick = useCallback(
     () => {
-      apiGet(
-        API_URLS.GET_TAX_DATA_FOR_YEAR, {
-          year: 2022,
-        },
-      )
-        .then((responseData: any) => {
-          console.log(
-            'RESPONSE', responseData.data,
-          );
-        });
-    }, [apiGet],
+      calculateTax(
+        yearValue, '1234',
+      ).then((res) => {
+        console.log(
+          'PROMISE RESOLVE', res,
+        );
+      });
+    }, [calculateTax, yearValue],
   );
 
   return (
     <div className={styles.container}>
-      PG Tax calculator
+      <input
+        onChange={onYearChange}
+        value={yearValue}
+      />
+      <button onClick={onCalculateClick}>Calculate</button>
     </div>
   );
 };

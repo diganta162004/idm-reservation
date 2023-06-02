@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client';
 import { UseApiProvider } from './hooks/useApi';
 import { isMocked } from './utils/CommonUtils';
 import { HomePage } from './features/HomePage';
+import { UseTaxDataProvider } from './hooks/useTaxData';
 
 type Props = {};
 
@@ -15,7 +16,9 @@ class App extends React.PureComponent <Props, State> {
       <UseApiProvider
         isMocked={isMocked}
       >
-        <HomePage />
+        <UseTaxDataProvider>
+          <HomePage />
+        </UseTaxDataProvider>
       </UseApiProvider>
     );
   }
