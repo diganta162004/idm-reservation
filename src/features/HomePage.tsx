@@ -1,4 +1,6 @@
 import React, { useCallback, useState } from 'react';
+import { Button } from '@mui/joy';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 import { DEFAULT_TAX_CALCULATED_VALUE, useTaxData } from '../hooks/useTaxData';
 import { LOADING_STATUS } from '../statics/enums';
@@ -59,7 +61,14 @@ const HomePage = () => {
         onChange={onIncomeValueChange}
         value={incomeValue}
       />
-      <button onClick={onCalculateClick}>Calculate</button>
+      <Button
+        size="lg"
+        loading={isLoading(loadingStatus)}
+        onClick={onCalculateClick}
+        endDecorator={<KeyboardArrowRight />}
+      >
+        Calculate
+      </Button>
       <div>{loadingStatus}</div>
       <div>{JSON.stringify(calculatedTaxData)}</div>
     </div>
