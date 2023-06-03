@@ -5,6 +5,7 @@ import { UseApiProvider } from './hooks/useApi';
 import { isMocked } from './utils/CommonUtils';
 import { HomePage } from './features/HomePage';
 import { UseTaxDataProvider } from './hooks/useTaxData';
+import { UseLoggerProvider } from './utils/UseLogger';
 
 type Props = {};
 
@@ -13,13 +14,15 @@ type State = {};
 class App extends React.PureComponent <Props, State> {
   render() {
     return (
-      <UseApiProvider
-        isMocked={isMocked}
-      >
-        <UseTaxDataProvider>
-          <HomePage />
-        </UseTaxDataProvider>
-      </UseApiProvider>
+      <UseLoggerProvider>
+        <UseApiProvider
+          isMocked={isMocked}
+        >
+          <UseTaxDataProvider>
+            <HomePage />
+          </UseTaxDataProvider>
+        </UseApiProvider>
+      </UseLoggerProvider>
     );
   }
 }

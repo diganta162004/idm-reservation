@@ -42,7 +42,7 @@ const HomePage = () => {
       ).then((res: CalculatedTaxType) => {
         setCalculatedTaxData(res);
         setLoadingStatus(LOADING_STATUS.COMPLETED);
-      }).catch((e) => {
+      }).catch(() => {
         setCalculatedTaxData(DEFAULT_TAX_CALCULATED_VALUE);
         setLoadingStatus(LOADING_STATUS.FAILED);
       });
