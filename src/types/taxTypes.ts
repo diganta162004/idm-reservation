@@ -5,3 +5,13 @@ export type BracketsType = {
 }
 
 export type TaxBracketsType = BracketsType[];
+
+export type CalculatedTaxBreakdownType = {
+	bracket: BracketsType,
+	amount: number,
+}
+
+export type CalculatedTaxType = {
+  breakdown?: CalculatedTaxBreakdownType[],
+  total: number,
+};

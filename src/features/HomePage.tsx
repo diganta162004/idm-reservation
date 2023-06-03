@@ -15,6 +15,7 @@ const HomePage = () => {
   const { calculateTax } = useTaxData();
 
   const [yearValue, setYearValue] = useState<string>('');
+  const [incomeValue, setIncomeValue] = useState<string>('');
 
   const onYearChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,16 +23,26 @@ const HomePage = () => {
     }, [],
   );
 
+  const onIncomeValueChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setIncomeValue(e.target.value);
+    }, [],
+  );
+
   const onCalculateClick = useCallback(
     () => {
       calculateTax(
-        yearValue, '1234',
+        yearValue, incomeValue,
       ).then((res) => {
         console.log(
           'PROMISE RESOLVE', res,
         );
+      }).catch((e) => {
+        console.log(
+          'Error 5', e,
+        );
       });
-    }, [calculateTax, yearValue],
+    }, [calculateTax, yearValue, incomeValue],
   );
 
   return (
@@ -39,6 +50,10 @@ const HomePage = () => {
       <input
         onChange={onYearChange}
         value={yearValue}
+      />
+      <input
+        onChange={onIncomeValueChange}
+        value={incomeValue}
       />
       <button onClick={onCalculateClick}>Calculate</button>
     </div>

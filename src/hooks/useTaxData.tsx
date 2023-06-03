@@ -9,16 +9,17 @@ import React, {
 import { TaxBracketsType } from '../types/taxTypes';
 import { useApi } from './useApi';
 import { API_URLS } from '../statics/apiUrls';
+import { calculateTaxBreakdownForYear, parseTaxBracketsApiData } from '../utils/DataUtils';
 
 type Props = {
     children: React.ReactNode,
 }
 interface UseTaxDataType {
-  calculateTax: (year: string, incomeValue: string) => Promise<string>
+  calculateTax: (year: string, incomeValue: string) => Promise<TaxBracketsType>
 }
 
 const UseTaxDataContext = createContext<UseTaxDataType>({
-  calculateTax: () => Promise.resolve(''),
+  calculateTax: () => Promise.resolve([]),
 });
 
 const useTaxData = () => useContext(UseTaxDataContext);
@@ -31,12 +32,17 @@ const UseTaxDataProvider = ({ children }: Props) => {
   const calculateTax = useCallback(
     (
       year: string, incomeValue: string,
-    ): Promise<string> => new Promise((
+    ): Promise<TaxBracketsType> => new Promise((
       resolve, reject,
     ) => {
       try {
         if (taxBracketsData[year]) {
-          resolve(`Calculated ${incomeValue} for year ${year}, ${JSON.stringify(taxBracketsData[year])}`);
+          console.log(
+            'CALCULATED', calculateTaxBreakdownForYear(
+              taxBracketsData[year], Number(incomeValue),
+            ),
+          );
+          resolve(taxBracketsData[year]);
           return;
         }
         apiGet(
@@ -45,14 +51,29 @@ const UseTaxDataProvider = ({ children }: Props) => {
           },
         )
           .then((responseData: any) => {
-            setTaxBracketsData((prevState) => ({
-              ...prevState,
-              [year]: responseData.data,
-            }));
-            resolve(`Calculated ${incomeValue} for year ${year}, ${JSON.stringify(responseData.data)}`);
+            if (responseData.data.tax_brackets) {
+              const parsedTaxBracketData: TaxBracketsType = parseTaxBracketsApiData(responseData.data);
+              setTaxBracketsData((prevState) => ({
+                ...prevState,
+                [year]: parsedTaxBracketData,
+              }));
+              console.log(
+                'CALCULATED', calculateTaxBreakdownForYear(
+                  parsedTaxBracketData, Number(incomeValue),
+                ),
+              );
+              resolve(parsedTaxBracketData);
+            } else {
+              reject(new Error('Calculation Error 1'));
+            }
+          }).catch((e) => {
+            console.log(
+              'ERROR 2', e,
+            );
+            reject(new Error('Calculation Error 3'));
           });
       } catch (e) {
-        reject(new Error('Calculation Error'));
+        reject(new Error('Calculation Error 4'));
       }
     }), [apiGet, taxBracketsData],
   );
