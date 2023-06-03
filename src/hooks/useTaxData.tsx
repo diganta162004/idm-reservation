@@ -6,7 +6,7 @@ import React, {
   useState,
 } from 'react';
 
-import { TaxBracketsType } from '../types/taxTypes';
+import { CalculatedTaxType, TaxBracketsType } from '../types/taxTypes';
 import { useApi } from './useApi';
 import { API_URLS } from '../statics/apiUrls';
 import { calculateTaxBreakdownForYear, parseTaxBracketsApiData } from '../utils/DataUtils';
@@ -14,12 +14,18 @@ import { calculateTaxBreakdownForYear, parseTaxBracketsApiData } from '../utils/
 type Props = {
     children: React.ReactNode,
 }
+
+const DEFAULT_TAX_CALCULATED_VALUE = {
+  breakdown: [],
+  total: 0,
+};
+
 interface UseTaxDataType {
-  calculateTax: (year: string, incomeValue: string) => Promise<TaxBracketsType>
+  calculateTax: (year: string, incomeValue: string) => Promise<CalculatedTaxType>
 }
 
 const UseTaxDataContext = createContext<UseTaxDataType>({
-  calculateTax: () => Promise.resolve([]),
+  calculateTax: () => Promise.resolve(DEFAULT_TAX_CALCULATED_VALUE),
 });
 
 const useTaxData = () => useContext(UseTaxDataContext);
@@ -32,17 +38,14 @@ const UseTaxDataProvider = ({ children }: Props) => {
   const calculateTax = useCallback(
     (
       year: string, incomeValue: string,
-    ): Promise<TaxBracketsType> => new Promise((
+    ): Promise<CalculatedTaxType> => new Promise((
       resolve, reject,
     ) => {
       try {
         if (taxBracketsData[year]) {
-          console.log(
-            'CALCULATED', calculateTaxBreakdownForYear(
-              taxBracketsData[year], Number(incomeValue),
-            ),
-          );
-          resolve(taxBracketsData[year]);
+          resolve(calculateTaxBreakdownForYear(
+            taxBracketsData[year], Number(incomeValue),
+          ));
           return;
         }
         apiGet(
@@ -57,12 +60,9 @@ const UseTaxDataProvider = ({ children }: Props) => {
                 ...prevState,
                 [year]: parsedTaxBracketData,
               }));
-              console.log(
-                'CALCULATED', calculateTaxBreakdownForYear(
-                  parsedTaxBracketData, Number(incomeValue),
-                ),
-              );
-              resolve(parsedTaxBracketData);
+              resolve(calculateTaxBreakdownForYear(
+                parsedTaxBracketData, Number(incomeValue),
+              ));
             } else {
               reject(new Error('Calculation Error 1'));
             }
@@ -96,6 +96,7 @@ const UseTaxDataProvider = ({ children }: Props) => {
 export {
   useTaxData,
   UseTaxDataProvider,
+  DEFAULT_TAX_CALCULATED_VALUE,
 };
 
 export type { Props };

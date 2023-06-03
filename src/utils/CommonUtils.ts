@@ -1,3 +1,5 @@
+import { LOADING_STATUS } from '../statics/enums';
+
 declare const USE_MOCK_DATA: string;
 
 export const isMocked: boolean = USE_MOCK_DATA.toString() === 'true' || false;
@@ -18,3 +20,5 @@ export const isNullOrEmpty = (value: any) => {
   }
   return true;
 };
+
+export const isLoading = (...args: LOADING_STATUS[]) => args.some((status: LOADING_STATUS) => status === LOADING_STATUS.LOADING);
