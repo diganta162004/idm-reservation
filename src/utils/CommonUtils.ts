@@ -7,7 +7,7 @@ export const isMocked: boolean = USE_MOCK_DATA.toString() === 'true' || false;
 export const isANumber = (value: string | number): boolean => {
   if (!value && value !== 0) {
     return false;
-  } if (value === Infinity || value === -Infinity) {
+  } if (value === Infinity || value === -Infinity || typeof value === 'number') {
     return true;
   }
   // return !Number.isNaN(parseFloat(value.toString()));
