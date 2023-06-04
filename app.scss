@@ -1,0 +1,17 @@
+@import "src/styles/main";
+
+* {
+
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: $background-level-1;
+}
