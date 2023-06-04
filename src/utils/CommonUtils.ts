@@ -22,3 +22,9 @@ export const isNullOrEmpty = (value: any) => {
 };
 
 export const isLoading = (...args: LOADING_STATUS[]) => args.some((status: LOADING_STATUS) => status === LOADING_STATUS.LOADING);
+
+export const isNotYetStarted = (...args: LOADING_STATUS[]) => args.some((status: LOADING_STATUS) => status === LOADING_STATUS.NOT_YET_STARTED);
+
+export const isCompleted = (...args: LOADING_STATUS[]) => args.some((status: LOADING_STATUS) => status === LOADING_STATUS.COMPLETED);
+
+export const isFailed = (...args: LOADING_STATUS[]) => args.some((status: LOADING_STATUS) => status === LOADING_STATUS.FAILED);

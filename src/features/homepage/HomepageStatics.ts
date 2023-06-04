@@ -27,6 +27,8 @@ export const HOMEPAGE_STATICS = {
     label: 'Calculate',
   },
   CALCULATED: {
+    DEFAULT_TEXT: 'Please choose the fiscal year and input your yearly income to determine the corresponding tax amount.',
+    FAILED_TEXT: 'Oops! Something went wrong. Try again later on.',
     TOTAL_TAX_TEMPLATE: '$ {value}',
     TOTAL_TAX_LABEL: 'Yearly Tax',
     TAX_PERCENTAGE_TEMPLATE: '{value} %',

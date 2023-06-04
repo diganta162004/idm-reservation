@@ -2,20 +2,22 @@ import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
 import {
-  Button, Card, Input, Option, Select, Table, Typography,
+  Button, Card, CircularProgress, Input, Option, Select, Table, Typography,
 } from '@mui/joy';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 import stringTemplate from 'string-template';
 import { DEFAULT_TAX_CALCULATED_VALUE, useTaxData } from '../../hooks/useTaxData';
 import { LOADING_STATUS } from '../../statics/enums';
-import { isLoading } from '../../utils/CommonUtils';
+import {
+  isCompleted, isFailed, isLoading, isNotYetStarted,
+} from '../../utils/CommonUtils';
 import { CalculatedTaxBreakdownType, CalculatedTaxType } from '../../types/taxTypes';
 import { HOMEPAGE_STATICS } from './HomepageStatics';
 import { calculateNetPercentage } from '../../utils/DataUtils';
+import { formatCurrency, toFixedDecimalPlaces } from '../../utils/NumberUtils';
 
 import './home-page.scss';
-import { formatCurrency, toFixedDecimalPlaces } from '../../utils/NumberUtils';
 
 const styles = {
   container: 'pgtc__home-page__container',
@@ -36,6 +38,8 @@ const styles = {
   },
   calculatedView: {
     container: 'pgtc__home-page__calculated-view-container',
+    loader: 'pgtc__home-page__calculated-view-loader',
+    defaultText: 'pgtc__home-page__calculated-view-default-text',
     primary: {
       container: 'pgtc__home-page__calculated-view-primary-container',
       amountText: 'pgtc__home-page__calculated-view-primary-amount-text',
@@ -59,16 +63,16 @@ const HomePage = () => {
   const [loadingStatus, setLoadingStatus] = useState<LOADING_STATUS>(LOADING_STATUS.NOT_YET_STARTED);
   const [calculatedTaxData, setCalculatedTaxData] = useState<CalculatedTaxType>(DEFAULT_TAX_CALCULATED_VALUE);
 
-  useEffect(
-    () => {
-      calculateTax(
-        '2022', '300000',
-      ).then((d) => {
-        setCalculatedTaxData(d);
-        setLoadingStatus(LOADING_STATUS.COMPLETED);
-      });
-    }, [],
-  );
+  // useEffect(
+  //   () => {
+  //     calculateTax(
+  //       '2022', '300000',
+  //     ).then((d) => {
+  //       setCalculatedTaxData(d);
+  //       setLoadingStatus(LOADING_STATUS.COMPLETED);
+  //     });
+  //   }, [],
+  // );
 
   const onYearChange = useCallback(
     (
@@ -235,7 +239,10 @@ const HomePage = () => {
       return null;
     }
     return (
-      <tr className={styles.calculatedView.table.row} key={tableData.bracket.min}>
+      <tr
+        className={styles.calculatedView.table.row}
+        key={tableData.bracket.min}
+      >
         <td className={styles.calculatedView.table.rowData}>{`${tableData.bracket.min} - ${tableData.bracket.max}`}</td>
         <td className={styles.calculatedView.table.rowData}>
           {stringTemplate(
@@ -263,10 +270,42 @@ const HomePage = () => {
     </Table>
   );
 
-  const getCalculatedView = () => (
-    <div className={styles.calculatedView.container}>
+  const getDefaultCalculatedView = () => (
+    <Typography
+      className={styles.calculatedView.defaultText}
+      textAlign="center"
+    >
+      {HOMEPAGE_STATICS.CALCULATED.DEFAULT_TEXT}
+    </Typography>
+  );
+
+  const getFailedView = () => (
+    <Typography
+      className={styles.calculatedView.defaultText}
+      textAlign="center"
+      textColor="danger.500"
+    >
+      {HOMEPAGE_STATICS.CALCULATED.FAILED_TEXT}
+    </Typography>
+  );
+
+  const getLoadingView = () => (
+    <CircularProgress variant="plain" />
+  );
+
+  const getCalculatedResult = () => (
+    <>
       {getPrimaryCalculatedValue()}
       {getTaxBreakdownTable()}
+    </>
+  );
+
+  const getCalculatedView = () => (
+    <div className={styles.calculatedView.container}>
+      {isLoading(loadingStatus) && getLoadingView()}
+      {isFailed(loadingStatus) && getFailedView()}
+      {isNotYetStarted(loadingStatus) && getDefaultCalculatedView()}
+      {isCompleted(loadingStatus) && calculatedTaxData.income > 0 && getCalculatedResult()}
     </div>
   );
 
