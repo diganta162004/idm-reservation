@@ -1,10 +1,14 @@
 import React, {
-  useCallback, useEffect, useMemo, useState,
+  useCallback,
+  useMemo,
+  useState,
 } from 'react';
 import {
-  Button, Card, CircularProgress, Input, Option, Select, Table, Typography,
+  Card,
+  CircularProgress,
+  Table,
+  Typography,
 } from '@mui/joy';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 import stringTemplate from 'string-template';
 import { DEFAULT_TAX_CALCULATED_VALUE, useTaxData } from '../../hooks/useTaxData';
@@ -16,6 +20,7 @@ import { CalculatedTaxBreakdownType, CalculatedTaxType } from '../../types/taxTy
 import { HOMEPAGE_STATICS } from './HomepageStatics';
 import { calculateNetPercentage } from '../../utils/DataUtils';
 import { formatCurrency, toFixedDecimalPlaces } from '../../utils/NumberUtils';
+import { InputView } from './InputView';
 
 import './home-page.scss';
 
@@ -28,13 +33,6 @@ const styles = {
   },
   inputView: {
     container: 'pgtc__home-page__input-view-container',
-    form: 'pgtc__home-page__input-view-form',
-    yearSelect: {
-      container: 'pgtc__home-page__input-view-year-select-container',
-    },
-    incomeInput: {
-      container: 'pgtc__home-page__input-view-income-input-container',
-    },
   },
   calculatedView: {
     container: 'pgtc__home-page__calculated-view-container',
@@ -58,39 +56,13 @@ const styles = {
 const HomePage = () => {
   const { calculateTax } = useTaxData();
 
-  const [yearValue, setYearValue] = useState<string>('');
-  const [incomeValue, setIncomeValue] = useState<string>('');
   const [loadingStatus, setLoadingStatus] = useState<LOADING_STATUS>(LOADING_STATUS.NOT_YET_STARTED);
   const [calculatedTaxData, setCalculatedTaxData] = useState<CalculatedTaxType>(DEFAULT_TAX_CALCULATED_VALUE);
 
-  // useEffect(
-  //   () => {
-  //     calculateTax(
-  //       '2022', '300000',
-  //     ).then((d) => {
-  //       setCalculatedTaxData(d);
-  //       setLoadingStatus(LOADING_STATUS.COMPLETED);
-  //     });
-  //   }, [],
-  // );
-
-  const onYearChange = useCallback(
-    (
-      event: React.SyntheticEvent | null,
-      newValue: string | null,
-    ) => {
-      setYearValue(newValue!);
-    }, [],
-  );
-
-  const onIncomeValueChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setIncomeValue(e.target.value);
-    }, [],
-  );
-
   const onCalculateClick = useCallback(
-    () => {
+    (
+      incomeValue: string, yearValue: string,
+    ) => {
       if (isLoading(loadingStatus)) {
         return;
       }
@@ -104,13 +76,13 @@ const HomePage = () => {
         setCalculatedTaxData(DEFAULT_TAX_CALCULATED_VALUE);
         setLoadingStatus(LOADING_STATUS.FAILED);
       });
-    }, [calculateTax, yearValue, incomeValue],
+    }, [calculateTax],
   );
 
   const netTaxPercentage: number = useMemo(
     () => calculateNetPercentage(
       calculatedTaxData.income, calculatedTaxData.total,
-    ), [calculatedTaxData, incomeValue],
+    ), [calculatedTaxData],
   );
 
   const getHeaderView = () => (
@@ -124,74 +96,13 @@ const HomePage = () => {
     </div>
   );
 
-  const getYearSelect = () => (
-    <div className={styles.inputView.yearSelect.container}>
-      <Typography
-        level="body1"
-        className={styles.calculatedView.primary.amountText}
-      >
-        {HOMEPAGE_STATICS.YEAR_SELECT.label}
-      </Typography>
-      <Select
-        size="lg"
-        placeholder={HOMEPAGE_STATICS.YEAR_SELECT.placeholder}
-        defaultValue={HOMEPAGE_STATICS.YEAR_SELECT.defaultValue}
-        onChange={onYearChange}
-      >
-        {HOMEPAGE_STATICS.YEAR_SELECT.options.map((item) => (
-          <Option
-            key={item.id}
-            value={item.id}
-          >
-            {item.name}
-          </Option>
-        ))}
-      </Select>
-    </div>
-  );
-
-  const getIncomeInput = () => (
-    <div className={styles.inputView.incomeInput.container}>
-      <Typography
-        level="body1"
-        className={styles.calculatedView.primary.amountText}
-      >
-        {HOMEPAGE_STATICS.INPUT_INCOME.label}
-      </Typography>
-      <Input
-        size="lg"
-        placeholder={HOMEPAGE_STATICS.INPUT_INCOME.placeholder}
-        endDecorator={
-          <Typography>{HOMEPAGE_STATICS.INPUT_INCOME.endDecorator}</Typography>
-        }
-        onChange={onIncomeValueChange}
-        value={incomeValue}
-      />
-    </div>
-  );
-
-  const getFormView = () => (
-    <form
-      className={styles.inputView.form}
-      onSubmit={(e) => e.preventDefault()}
-    >
-      {getYearSelect()}
-      {getIncomeInput()}
-      <Button
-        size="lg"
-        loading={isLoading(loadingStatus)}
-        onClick={onCalculateClick}
-        endDecorator={<KeyboardArrowRight />}
-      >
-        {HOMEPAGE_STATICS.CALCULATE_BUTTON.label}
-      </Button>
-    </form>
-  );
-
   const getInputView = () => (
     <div className={styles.inputView.container}>
       {getHeaderView()}
-      {getFormView()}
+      <InputView
+        loadingStatus={loadingStatus}
+        onCalculateClick={onCalculateClick}
+      />
     </div>
   );
 

@@ -33,26 +33,6 @@
       flex-direction: column;
       justify-content: center;
     }
-
-    &-form {
-      margin-top: 2rem;
-      display: flex;
-      flex-direction: column;
-      row-gap: 1rem;
-      justify-content: center;
-    }
-
-    &-year-select {
-      &-container {
-
-      }
-    }
-
-    &-income-input {
-      &-container {
-
-      }
-    }
   }
 
   &__calculated-view {
