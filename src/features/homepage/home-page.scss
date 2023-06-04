@@ -67,13 +67,43 @@
 
     &-primary {
       &-container {
-        &-amount-text {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      &-amount {
+        &-text {
 
         }
 
-        &-percent-text {
+        &-label {
 
         }
+      }
+
+      &-percent {
+        &-text {
+
+        }
+
+        &-label {
+
+        }
+      }
+    }
+
+    &-table {
+      &-container {
+        margin-top: 2rem;
+      }
+
+      &-row {
+
+      }
+
+      &-row-data {
+        text-align: center;
       }
     }
   }

@@ -26,4 +26,12 @@ export const HOMEPAGE_STATICS = {
   CALCULATE_BUTTON: {
     label: 'Calculate',
   },
+  CALCULATED: {
+    TOTAL_TAX_TEMPLATE: '$ {value}',
+    TOTAL_TAX_LABEL: 'Yearly Tax',
+    TAX_PERCENTAGE_TEMPLATE: '{value} %',
+    TAX_PERCENTAGE_LABEL: 'Net Percentage',
+    BRACKET_RATE_TEMPLATE: '{value} %',
+    BRACKET_TAX_TEMPLATE: '$ {value}',
+  },
 };
