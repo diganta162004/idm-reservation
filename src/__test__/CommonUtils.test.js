@@ -23,6 +23,8 @@ describe(
         expect(isANumber(10.000)).toEqual(true);
         expect(isANumber(0.001)).toEqual(true);
         expect(isANumber(0.00)).toEqual(true);
+        expect(isANumber(Infinity)).toEqual(true);
+        expect(isANumber(-Infinity)).toEqual(true);
       },
     );
     test(

@@ -1,5 +1,5 @@
 import {
-  calculateNetPercentage, calculateTaxForBracket, parseTaxBracketsApiData,
+  calculateNetPercentage, calculateTaxBreakdownForYear, calculateTaxForBracket, parseTaxBracketsApiData,
 } from '../utils/DataUtils';
 
 describe(
@@ -85,6 +85,13 @@ describe(
             rate: 0.10,
           }, 200,
         )).toEqual(10);
+        expect(calculateTaxForBracket(
+          {
+            min: 200,
+            max: Infinity,
+            rate: 0.20,
+          }, 300,
+        )).toEqual(20);
       },
     );
     test(
@@ -130,6 +137,102 @@ describe(
             max: 100,
           }, null,
         )).toEqual(0);
+      },
+    );
+  },
+);
+
+describe(
+  'DataUtils: calculateTaxBreakdownForYear', () => {
+    test(
+      'positive cases', () => {
+        expect(calculateTaxBreakdownForYear(
+          [{
+            min: 0,
+            max: 100,
+            rate: 0.10,
+          }], 100,
+        )).toEqual({
+          breakdown: [{
+            amount: 10,
+            bracket: {
+              min: 0,
+              max: 100,
+              rate: 0.10,
+            },
+          }],
+          income: 100,
+          total: 10,
+        });
+        expect(calculateTaxBreakdownForYear(
+          [{
+            min: 0,
+            max: 100,
+            rate: 0.10,
+          }, {
+            min: 100,
+            max: 200,
+            rate: 0.20,
+          }], 200,
+        )).toEqual({
+          breakdown: [{
+            amount: 10,
+            bracket: {
+              min: 0,
+              max: 100,
+              rate: 0.10,
+            },
+          }, {
+            amount: 20,
+            bracket: {
+              min: 100,
+              max: 200,
+              rate: 0.20,
+            },
+          }],
+          income: 200,
+          total: 30,
+        });
+        expect(calculateTaxBreakdownForYear(
+          [{
+            min: 0,
+            max: 100,
+            rate: 0.10,
+          }, {
+            min: 100,
+            max: 200,
+            rate: 0.20,
+          }, {
+            min: 200,
+            max: Infinity,
+            rate: 0.30,
+          }], 300,
+        )).toEqual({
+          breakdown: [{
+            amount: 10,
+            bracket: {
+              min: 0,
+              max: 100,
+              rate: 0.10,
+            },
+          }, {
+            amount: 20,
+            bracket: {
+              min: 100,
+              max: 200,
+              rate: 0.20,
+            },
+          }, {
+            amount: 30,
+            bracket: {
+              min: 200,
+              max: Infinity,
+              rate: 0.30,
+            },
+          }],
+          income: 300,
+          total: 60,
+        });
       },
     );
   },
