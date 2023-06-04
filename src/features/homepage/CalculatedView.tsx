@@ -123,7 +123,7 @@ const CalculatedView = (props: Props) => {
       >
         <td className={styles.table.rowData}>
           <Typography>
-            {`${tableData.bracket.min} - ${tableData.bracket.max}`}
+            {`$ ${formatCurrency(tableData.bracket.min)} - ${formatCurrency(tableData.bracket.max)}`}
           </Typography>
         </td>
         <td className={styles.table.rowData}>
