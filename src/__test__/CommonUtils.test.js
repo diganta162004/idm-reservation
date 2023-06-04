@@ -1,10 +1,50 @@
 import {
-  isCompleted, isFailed, isLoading, isNotYetStarted, isNullOrEmpty,
+  isCompleted,
+  isFailed,
+  isLoading,
+  isNotYetStarted,
+  isNullOrEmpty,
+  isANumber,
 } from '../utils/CommonUtils';
 import { LOADING_STATUS } from '../statics/enums';
 
 describe(
-  'DataUtils: isNullOrEmpty', () => {
+  'CommonUtils: isANumber', () => {
+    test(
+      'positive cases', () => {
+        expect(isANumber(100)).toEqual(true);
+        expect(isANumber('100')).toEqual(true);
+        expect(isANumber(0)).toEqual(true);
+        expect(isANumber(-0)).toEqual(true);
+        expect(isANumber('100.02312')).toEqual(true);
+        expect(isANumber(100.35)).toEqual(true);
+        expect(isANumber(-100)).toEqual(true);
+        expect(isANumber(-100.35)).toEqual(true);
+        expect(isANumber(10.000)).toEqual(true);
+        expect(isANumber(0.001)).toEqual(true);
+        expect(isANumber(0.00)).toEqual(true);
+      },
+    );
+    test(
+      'negative cases', () => {
+        expect(isANumber(null)).toEqual(false);
+        expect(isANumber(undefined)).toEqual(false);
+        expect(isANumber()).toEqual(false);
+        expect(isANumber('abc')).toEqual(false);
+        expect(isANumber('a100.123')).toEqual(false);
+        expect(isANumber('100.12a3')).toEqual(false);
+        expect(isANumber('100.123a')).toEqual(false);
+        expect(isANumber('100.12.12')).toEqual(false);
+        expect(isANumber(false)).toEqual(false);
+        expect(isANumber(true)).toEqual(false);
+        expect(isANumber('0000.001')).toEqual(false);
+      },
+    );
+  },
+);
+
+describe(
+  'CommonUtils: isNullOrEmpty', () => {
     test(
       'positive cases', () => {
         expect(isNullOrEmpty(null)).toEqual(true);
@@ -32,7 +72,7 @@ describe(
 );
 
 describe(
-  'DataUtils: isLoading', () => {
+  'CommonUtils: isLoading', () => {
     test(
       'positive cases with single and multiple params', () => {
         expect(isLoading(LOADING_STATUS.LOADING)).toEqual(true);
@@ -67,7 +107,7 @@ describe(
 );
 
 describe(
-  'DataUtils: isNotYetStarted', () => {
+  'CommonUtils: isNotYetStarted', () => {
     test(
       'positive cases with single and multiple params', () => {
         expect(isNotYetStarted(LOADING_STATUS.NOT_YET_STARTED)).toEqual(true);
@@ -102,7 +142,7 @@ describe(
 );
 
 describe(
-  'DataUtils: isCompleted', () => {
+  'CommonUtils: isCompleted', () => {
     test(
       'positive cases with single and multiple params', () => {
         expect(isCompleted(LOADING_STATUS.COMPLETED)).toEqual(true);
@@ -137,7 +177,7 @@ describe(
 );
 
 describe(
-  'DataUtils: isFailed', () => {
+  'CommonUtils: isFailed', () => {
     test(
       'positive cases with single and multiple params', () => {
         expect(isFailed(LOADING_STATUS.FAILED)).toEqual(true);

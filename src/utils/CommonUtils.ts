@@ -4,6 +4,14 @@ declare const USE_MOCK_DATA: string;
 
 export const isMocked: boolean = USE_MOCK_DATA.toString() === 'true' || false;
 
+export const isANumber = (value: string | number): boolean => {
+  if (!value && value !== 0) {
+    return false;
+  }
+  // return !Number.isNaN(parseFloat(value.toString()));
+  return /^(?!-0?(\.0+)?$)-?(0|[1-9]\d*)?(\.\d+)?(?<=\d)$/.test(value.toString());
+};
+
 export const isNullOrEmpty = (value: any) => {
   if (typeof value === 'number' && value === 0) {
     return false;

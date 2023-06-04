@@ -2,7 +2,7 @@ import {
   BracketsType,
   CalculatedTaxBreakdownType, CalculatedTaxType, TaxBracketsType,
 } from '../types/taxTypes';
-import { isNullOrEmpty } from './CommonUtils';
+import { isANumber, isNullOrEmpty } from './CommonUtils';
 
 export const parseTaxBracketsApiData = (apiData: any): TaxBracketsType => {
   try {
@@ -53,6 +53,9 @@ export const calculateNetPercentage = (
   totalIncome: number|string, taxAmount: number|string,
 ): number => {
   if (!totalIncome || !taxAmount || totalIncome === 0 || taxAmount === 0) {
+    return 0;
+  }
+  if (!isANumber(totalIncome) || !isANumber(taxAmount)) {
     return 0;
   }
   return (Number(taxAmount) / Number(totalIncome)) * 100;
