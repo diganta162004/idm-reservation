@@ -35,5 +35,11 @@ export const HOMEPAGE_STATICS = {
     TAX_PERCENTAGE_LABEL: 'Net Percentage',
     BRACKET_RATE_TEMPLATE: '{value} %',
     BRACKET_TAX_TEMPLATE: '$ {value}',
+    ADDITIONAL_LINKS: {
+      SAVE_TAX: {
+        label: 'Want to reduce your tax burden?',
+        href: 'https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/rc4466/tax-free-savings-account-tfsa-guide-individuals.html',
+      },
+    },
   },
 };

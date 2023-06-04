@@ -62,4 +62,16 @@
       text-align: center;
     }
   }
+
+  &__additional {
+    &-container {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    &-button {
+
+    }
+  }
 }

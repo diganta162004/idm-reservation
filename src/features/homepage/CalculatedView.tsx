@@ -1,11 +1,13 @@
 import React, { useMemo } from 'react';
 import {
-  CircularProgress, Divider,
+  Button,
+  CircularProgress, Divider, Link,
   Table,
   Typography,
 } from '@mui/joy';
 import stringTemplate from 'string-template';
 
+import { OpenInNew } from '@mui/icons-material';
 import {
   isFailed,
   isLoading,
@@ -40,7 +42,10 @@ const styles = {
     row: 'pgtc__calculated-view__table-row',
     rowData: 'pgtc__calculated-view__table-row-data',
   },
-
+  additional: {
+    container: 'pgtc__calculated-view__additional-container',
+    button: 'pgtc__calculated-view__additional-button',
+  },
 };
 const CalculatedView = (props: Props) => {
   const { calculatedTaxData, loadingStatus } = props;
@@ -159,6 +164,19 @@ const CalculatedView = (props: Props) => {
     </Table>
   );
 
+  const getAdditionalLinksView = () => (
+    <div className={styles.additional.container}>
+      <Link
+        href={HOMEPAGE_STATICS.CALCULATED.ADDITIONAL_LINKS.SAVE_TAX.href}
+        fontWeight="md"
+        target="_blank"
+        rel="noreferrer"
+      >
+        {HOMEPAGE_STATICS.CALCULATED.ADDITIONAL_LINKS.SAVE_TAX.label}
+      </Link>
+    </div>
+  );
+
   if (isLoading(loadingStatus)) {
     return (
       <CircularProgress
@@ -196,6 +214,8 @@ const CalculatedView = (props: Props) => {
       {getPrimaryCalculatedValue()}
       <Divider />
       {getTaxBreakdownTable()}
+      <Divider />
+      {getAdditionalLinksView()}
     </div>
   );
 };
