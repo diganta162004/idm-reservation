@@ -19,6 +19,7 @@ type Props = {
 const DEFAULT_TAX_CALCULATED_VALUE = {
   breakdown: [],
   total: 0,
+  income: 0,
 };
 
 interface UseTaxDataType {

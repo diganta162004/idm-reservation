@@ -1,6 +1,7 @@
 export const HOMEPAGE_STATICS = {
   TITLE: 'Calculate your tax',
   YEAR_SELECT: {
+    label: 'Select financial year',
     placeholder: 'Select year',
     defaultValue: '2022',
     options: [{
@@ -18,6 +19,7 @@ export const HOMEPAGE_STATICS = {
     }],
   },
   INPUT_INCOME: {
+    label: 'Enter total income per annum',
     placeholder: 'Enter total income',
     endDecorator: 'p.a.',
   },

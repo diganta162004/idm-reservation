@@ -1,36 +1,49 @@
-import React, { useCallback, useState } from 'react';
+import React, {
+  useCallback, useMemo, useState,
+} from 'react';
 import {
   Button,
   Card,
   Typography,
   Input,
   Select,
-  Option,
+  Option, Table,
 } from '@mui/joy';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 import { DEFAULT_TAX_CALCULATED_VALUE, useTaxData } from '../../hooks/useTaxData';
 import { LOADING_STATUS } from '../../statics/enums';
 import { isLoading } from '../../utils/CommonUtils';
-import { CalculatedTaxType } from '../../types/taxTypes';
+import { CalculatedTaxBreakdownType, CalculatedTaxType } from '../../types/taxTypes';
 import { HOMEPAGE_STATICS } from './HomepageStatics';
+import { calculateNetPercentage } from '../../utils/DataUtils';
 
 import './home-page.scss';
 
 const styles = {
   container: 'pgtc__home-page__container',
   card: 'pgtc__home-page__card',
-  cardContent: 'pgtc__home-page__card-content',
   header: {
     container: 'pgtc__home-page__header-container',
     titleText: 'pgtc__home-page__header-title-text',
   },
   inputView: {
     container: 'pgtc__home-page__input-view-container',
+    form: 'pgtc__home-page__input-view-form',
+    yearSelect: {
+      container: 'pgtc__home-page__input-view-year-select-container',
+    },
+    incomeInput: {
+      container: 'pgtc__home-page__input-view-income-input-container',
+    },
   },
   calculatedView: {
     container: 'pgtc__home-page__calculated-view-container',
-    totalTaxText: 'pgtc__home-page__calculated-view-total-tax-text',
+    primary: {
+      container: 'pgtc__home-page__calculated-view-primary-container',
+      amountText: 'pgtc__home-page__calculated-view-primary-amount-text',
+      percentText: 'pgtc__home-page__calculated-view-primary-percent-text',
+    },
   },
 };
 
@@ -75,6 +88,12 @@ const HomePage = () => {
     }, [calculateTax, yearValue, incomeValue],
   );
 
+  const netTaxPercentage: number = useMemo(
+    () => calculateNetPercentage(
+      calculatedTaxData.income, calculatedTaxData.total,
+    ), [calculatedTaxData, incomeValue],
+  );
+
   const getHeaderView = () => (
     <div className={styles.header.container}>
       <Typography
@@ -86,8 +105,14 @@ const HomePage = () => {
     </div>
   );
 
-  const getInputView = () => (
-    <div className={styles.inputView.container}>
+  const getYearSelect = () => (
+    <div className={styles.inputView.yearSelect.container}>
+      <Typography
+        level="body1"
+        className={styles.calculatedView.primary.amountText}
+      >
+        {HOMEPAGE_STATICS.YEAR_SELECT.label}
+      </Typography>
       <Select
         size="lg"
         placeholder={HOMEPAGE_STATICS.YEAR_SELECT.placeholder}
@@ -103,6 +128,17 @@ const HomePage = () => {
           </Option>
         ))}
       </Select>
+    </div>
+  );
+
+  const getIncomeInput = () => (
+    <div className={styles.inputView.incomeInput.container}>
+      <Typography
+        level="body1"
+        className={styles.calculatedView.primary.amountText}
+      >
+        {HOMEPAGE_STATICS.INPUT_INCOME.label}
+      </Typography>
       <Input
         size="lg"
         placeholder={HOMEPAGE_STATICS.INPUT_INCOME.placeholder}
@@ -112,6 +148,16 @@ const HomePage = () => {
         onChange={onIncomeValueChange}
         value={incomeValue}
       />
+    </div>
+  )
+
+  const getFormView = () => (
+    <form
+      className={styles.inputView.form}
+      onSubmit={(e) => e.preventDefault()}
+    >
+      {getYearSelect()}
+      {getIncomeInput()}
       <Button
         size="lg"
         loading={isLoading(loadingStatus)}
@@ -120,12 +166,58 @@ const HomePage = () => {
       >
         {HOMEPAGE_STATICS.CALCULATE_BUTTON.label}
       </Button>
+    </form>
+  );
+
+  const getInputView = () => (
+    <div className={styles.inputView.container}>
+      {getHeaderView()}
+      {getFormView()}
     </div>
+  );
+
+  const getPrimaryCalculatedValue = () => (
+    <div className={styles.calculatedView.primary.container}>
+      <Typography
+        level="h2"
+        className={styles.calculatedView.primary.amountText}
+      >
+        {calculatedTaxData.total}
+      </Typography>
+      <Typography
+        level="h4"
+        className={styles.calculatedView.primary.percentText}
+      >
+        {netTaxPercentage}
+      </Typography>
+    </div>
+  );
+
+  const getTaxBreakdownRow = (tableData: CalculatedTaxBreakdownType) => {
+    if (tableData.amount <= 0) {
+      return null;
+    }
+    return (
+      <tr>
+        <td>{`${tableData.bracket.min} - ${tableData.bracket.max}`}</td>
+        <td>{tableData.bracket.rate}</td>
+        <td>{tableData.amount}</td>
+      </tr>
+    );
+  };
+
+  const getTaxBreakdownTable = () => (
+    <Table>
+      <tbody>
+        {calculatedTaxData.breakdown?.map(getTaxBreakdownRow)}
+      </tbody>
+    </Table>
   );
 
   const getCalculatedView = () => (
     <div className={styles.calculatedView.container}>
-      <Typography level="h2">{calculatedTaxData.total}</Typography>
+      {getPrimaryCalculatedValue()}
+      {getTaxBreakdownTable()}
     </div>
   );
 
@@ -133,12 +225,10 @@ const HomePage = () => {
     <div className={styles.container}>
       <Card
         className={styles.card}
+        orientation="horizontal"
       >
-        {getHeaderView()}
-        <div className={styles.cardContent}>
-          {getInputView()}
-          {getCalculatedView()}
-        </div>
+        {getInputView()}
+        {getCalculatedView()}
       </Card>
     </div>
   );

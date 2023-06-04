@@ -14,4 +14,5 @@ export type CalculatedTaxBreakdownType = {
 export type CalculatedTaxType = {
   breakdown?: CalculatedTaxBreakdownType[],
   total: number,
+	income: number,
 };

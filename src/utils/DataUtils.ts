@@ -45,5 +45,15 @@ export const calculateTaxBreakdownForYear = (
   return ({
     breakdown,
     total: totalAmount,
+    income,
   });
+};
+
+export const calculateNetPercentage = (
+  totalIncome: number|string, taxAmount: number|string,
+): number => {
+  if (!totalIncome || !taxAmount || totalIncome === 0 || taxAmount === 0) {
+    return 0;
+  }
+  return (Number(taxAmount) / Number(totalIncome)) * 100;
 };
