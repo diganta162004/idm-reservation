@@ -28,6 +28,7 @@ import { CalculatedView } from './CalculatedView';
 const styles = {
   container: 'pgtc__home-page__container',
   card: 'pgtc__home-page__card',
+  cardContent: 'pgtc__home-page__card-content',
   header: {
     container: 'pgtc__home-page__header-container',
     titleText: 'pgtc__home-page__header-title-text',
@@ -100,10 +101,11 @@ const HomePage = () => {
     <div className={styles.container}>
       <Card
         className={styles.card}
-        orientation="horizontal"
       >
-        {getInputView()}
-        {getCalculatedView()}
+        <div className={styles.cardContent}>
+          {getInputView()}
+          {getCalculatedView()}
+        </div>
       </Card>
     </div>
   );

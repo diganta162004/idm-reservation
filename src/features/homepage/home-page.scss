@@ -13,6 +13,15 @@
     min-height: 60vh;
   }
 
+  &__card-content {
+    display: flex;
+    flex: 1;
+
+    @include device-m {
+      flex-direction: column;
+    }
+  }
+
   &__header {
     &-container {
 
@@ -32,6 +41,10 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+
+      @include device-m {
+        border-right: 0;
+      }
     }
   }
 
