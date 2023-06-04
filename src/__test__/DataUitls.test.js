@@ -1,4 +1,69 @@
-import { calculateNetPercentage } from '../utils/DataUtils';
+import { calculateNetPercentage, parseTaxBracketsApiData } from '../utils/DataUtils';
+
+describe(
+  'DataUtils: parseTaxBracketsApiData', () => {
+    test(
+      'positive cases', () => {
+        expect(parseTaxBracketsApiData({
+          tax_brackets: [{
+            min: 100,
+            max: 1000,
+            rate: 10,
+          }],
+        })).toEqual([{
+          min: 100,
+          max: 1000,
+          rate: 10,
+        }]);
+        expect(parseTaxBracketsApiData({
+          tax_brackets: [{
+            max: 1000,
+            rate: 10,
+          }],
+        })).toEqual([{
+          min: 0,
+          max: 1000,
+          rate: 10,
+        }]);
+        expect(parseTaxBracketsApiData({
+          tax_brackets: [{
+            min: 1000,
+            rate: 10,
+          }],
+        })).toEqual([{
+          min: 1000,
+          max: Infinity,
+          rate: 10,
+        }]);
+        expect(parseTaxBracketsApiData({
+          tax_brackets: [{
+            min: -1000,
+            max: 1000,
+            rate: 10,
+          }],
+        })).toEqual([{
+          min: 0,
+          max: 1000,
+          rate: 10,
+        }]);
+      },
+    );
+    test(
+      'negative cases', () => {
+        expect(parseTaxBracketsApiData({
+          tax_brackets: [],
+        })).toEqual([]);
+        expect(parseTaxBracketsApiData({
+          unknownKey: [],
+        })).toEqual([]);
+        expect(parseTaxBracketsApiData(null)).toEqual([]);
+        expect(parseTaxBracketsApiData({
+          tax_brackets: null,
+        })).toEqual([]);
+      },
+    );
+  },
+);
 
 describe(
   'DataUtils: calculateNetPercentage', () => {
