@@ -22,10 +22,20 @@ export const parseTaxBracketsApiData = (apiData: any): TaxBracketsType => {
 export const calculateTaxForBracket = (
   bracket: BracketsType, totalIncome: number,
 ): number => {
-  const bracketIncome = Math.min(
-    totalIncome - bracket.min > 0 ? totalIncome - bracket.min : 0, bracket.max - bracket.min,
-  );
-  return bracketIncome * bracket.rate;
+  try {
+    if (!isANumber(bracket.min)
+      || !isANumber(bracket.max)
+      || !isANumber(bracket.rate)
+      || !isANumber(totalIncome)) {
+      return 0;
+    }
+    const bracketIncome = Math.min(
+      totalIncome - bracket.min > 0 ? totalIncome - bracket.min : 0, bracket.max - bracket.min,
+    );
+    return bracketIncome * bracket.rate;
+  } catch (e) {
+    return 0;
+  }
 };
 
 export const calculateTaxBreakdownForYear = (

@@ -1,4 +1,6 @@
-import { calculateNetPercentage, parseTaxBracketsApiData } from '../utils/DataUtils';
+import {
+  calculateNetPercentage, calculateTaxForBracket, parseTaxBracketsApiData,
+} from '../utils/DataUtils';
 
 describe(
   'DataUtils: parseTaxBracketsApiData', () => {
@@ -8,43 +10,43 @@ describe(
           tax_brackets: [{
             min: 100,
             max: 1000,
-            rate: 10,
+            rate: 0.10,
           }],
         })).toEqual([{
           min: 100,
           max: 1000,
-          rate: 10,
+          rate: 0.10,
         }]);
         expect(parseTaxBracketsApiData({
           tax_brackets: [{
             max: 1000,
-            rate: 10,
+            rate: 0.10,
           }],
         })).toEqual([{
           min: 0,
           max: 1000,
-          rate: 10,
+          rate: 0.10,
         }]);
         expect(parseTaxBracketsApiData({
           tax_brackets: [{
             min: 1000,
-            rate: 10,
+            rate: 0.10,
           }],
         })).toEqual([{
           min: 1000,
           max: Infinity,
-          rate: 10,
+          rate: 0.10,
         }]);
         expect(parseTaxBracketsApiData({
           tax_brackets: [{
             min: -1000,
             max: 1000,
-            rate: 10,
+            rate: 0.10,
           }],
         })).toEqual([{
           min: 0,
           max: 1000,
-          rate: 10,
+          rate: 0.10,
         }]);
       },
     );
@@ -60,6 +62,74 @@ describe(
         expect(parseTaxBracketsApiData({
           tax_brackets: null,
         })).toEqual([]);
+      },
+    );
+  },
+);
+
+describe(
+  'DataUtils: calculateTaxForBracket', () => {
+    test(
+      'positive cases', () => {
+        expect(calculateTaxForBracket(
+          {
+            min: 0,
+            max: 100,
+            rate: 0.10,
+          }, 100,
+        )).toEqual(10);
+        expect(calculateTaxForBracket(
+          {
+            min: 100,
+            max: 200,
+            rate: 0.10,
+          }, 200,
+        )).toEqual(10);
+      },
+    );
+    test(
+      'edge cases', () => {
+        expect(calculateTaxForBracket(
+          {
+            min: 0,
+            max: -100,
+            rate: 0.10,
+          }, 100,
+        )).toEqual(-10);
+        expect(calculateTaxForBracket(
+          {
+            min: 0,
+            max: 100,
+            rate: -0.10,
+          }, 100,
+        )).toEqual(-10);
+        expect(calculateTaxForBracket(
+          {
+            min: 0,
+            max: 100,
+            rate: 0.10,
+          }, 0,
+        )).toEqual(0);
+        expect(calculateTaxForBracket(
+          null, 0,
+        )).toEqual(0);
+        expect(calculateTaxForBracket(
+          {}, 0,
+        )).toEqual(0);
+        expect(calculateTaxForBracket(
+          {
+            min: 0,
+            max: 100,
+            rate: 0.10,
+          }, null,
+        )).toEqual(0);
+        expect(calculateTaxForBracket()).toEqual(0);
+        expect(calculateTaxForBracket(
+          {
+            min: 0,
+            max: 100,
+          }, null,
+        )).toEqual(0);
       },
     );
   },
