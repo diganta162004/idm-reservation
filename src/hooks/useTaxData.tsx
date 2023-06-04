@@ -58,7 +58,7 @@ const UseTaxDataProvider = ({ children }: Props) => {
         }
         apiGet(
           API_URLS.GET_TAX_DATA_FOR_YEAR, {
-            yearValue,
+            year: yearValue,
           },
         )
           .then((responseData: any) => {

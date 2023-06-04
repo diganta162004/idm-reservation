@@ -23,6 +23,7 @@ import { formatCurrency, toFixedDecimalPlaces } from '../../utils/NumberUtils';
 import { InputView } from './InputView';
 
 import './home-page.scss';
+import { CalculatedView } from './CalculatedView';
 
 const styles = {
   container: 'pgtc__home-page__container',
@@ -36,20 +37,6 @@ const styles = {
   },
   calculatedView: {
     container: 'pgtc__home-page__calculated-view-container',
-    loader: 'pgtc__home-page__calculated-view-loader',
-    defaultText: 'pgtc__home-page__calculated-view-default-text',
-    primary: {
-      container: 'pgtc__home-page__calculated-view-primary-container',
-      amountText: 'pgtc__home-page__calculated-view-primary-amount-text',
-      amountLabel: 'pgtc__home-page__calculated-view-primary-amount-label',
-      percentText: 'pgtc__home-page__calculated-view-primary-percent-text',
-      percentLabel: 'pgtc__home-page__calculated-view-primary-percent-label',
-    },
-    table: {
-      container: 'pgtc__home-page__calculated-view-table-container',
-      row: 'pgtc__home-page__calculated-view-table-row',
-      rowData: 'pgtc__home-page__calculated-view-table-row-data',
-    },
   },
 };
 
@@ -79,12 +66,6 @@ const HomePage = () => {
     }, [calculateTax],
   );
 
-  const netTaxPercentage: number = useMemo(
-    () => calculateNetPercentage(
-      calculatedTaxData.income, calculatedTaxData.total,
-    ), [calculatedTaxData],
-  );
-
   const getHeaderView = () => (
     <div className={styles.header.container}>
       <Typography
@@ -106,117 +87,12 @@ const HomePage = () => {
     </div>
   );
 
-  const getPrimaryCalculatedValue = () => (
-    <div className={styles.calculatedView.primary.container}>
-      <Typography
-        level="h2"
-        className={styles.calculatedView.primary.amountText}
-      >
-        {stringTemplate(
-          HOMEPAGE_STATICS.CALCULATED.TOTAL_TAX_TEMPLATE, {
-            value: formatCurrency(calculatedTaxData.total),
-          },
-        )}
-      </Typography>
-      <Typography
-        level="body2"
-        className={styles.calculatedView.primary.amountLabel}
-      >
-        {HOMEPAGE_STATICS.CALCULATED.TOTAL_TAX_LABEL}
-      </Typography>
-      <Typography
-        level="h4"
-        className={styles.calculatedView.primary.percentText}
-      >
-        {stringTemplate(
-          HOMEPAGE_STATICS.CALCULATED.TAX_PERCENTAGE_TEMPLATE, {
-            value: toFixedDecimalPlaces(
-              netTaxPercentage, 2,
-            ),
-          },
-        )}
-      </Typography>
-      <Typography
-        level="body2"
-        className={styles.calculatedView.primary.percentLabel}
-      >
-        {HOMEPAGE_STATICS.CALCULATED.TAX_PERCENTAGE_LABEL}
-      </Typography>
-    </div>
-  );
-
-  const getTaxBreakdownRow = (tableData: CalculatedTaxBreakdownType) => {
-    if (tableData.amount <= 0) {
-      return null;
-    }
-    return (
-      <tr
-        className={styles.calculatedView.table.row}
-        key={tableData.bracket.min}
-      >
-        <td className={styles.calculatedView.table.rowData}>{`${tableData.bracket.min} - ${tableData.bracket.max}`}</td>
-        <td className={styles.calculatedView.table.rowData}>
-          {stringTemplate(
-            HOMEPAGE_STATICS.CALCULATED.BRACKET_RATE_TEMPLATE, {
-              value: tableData.bracket.rate,
-            },
-          )}
-        </td>
-        <td className={styles.calculatedView.table.rowData}>
-          {stringTemplate(
-            HOMEPAGE_STATICS.CALCULATED.BRACKET_TAX_TEMPLATE, {
-              value: formatCurrency(tableData.amount),
-            },
-          )}
-        </td>
-      </tr>
-    );
-  };
-
-  const getTaxBreakdownTable = () => (
-    <Table className={styles.calculatedView.table.container}>
-      <tbody>
-        {calculatedTaxData.breakdown?.map(getTaxBreakdownRow)}
-      </tbody>
-    </Table>
-  );
-
-  const getDefaultCalculatedView = () => (
-    <Typography
-      className={styles.calculatedView.defaultText}
-      textAlign="center"
-    >
-      {HOMEPAGE_STATICS.CALCULATED.DEFAULT_TEXT}
-    </Typography>
-  );
-
-  const getFailedView = () => (
-    <Typography
-      className={styles.calculatedView.defaultText}
-      textAlign="center"
-      textColor="danger.500"
-    >
-      {HOMEPAGE_STATICS.CALCULATED.FAILED_TEXT}
-    </Typography>
-  );
-
-  const getLoadingView = () => (
-    <CircularProgress variant="plain" />
-  );
-
-  const getCalculatedResult = () => (
-    <>
-      {getPrimaryCalculatedValue()}
-      {getTaxBreakdownTable()}
-    </>
-  );
-
   const getCalculatedView = () => (
     <div className={styles.calculatedView.container}>
-      {isLoading(loadingStatus) && getLoadingView()}
-      {isFailed(loadingStatus) && getFailedView()}
-      {isNotYetStarted(loadingStatus) && getDefaultCalculatedView()}
-      {isCompleted(loadingStatus) && calculatedTaxData.income > 0 && getCalculatedResult()}
+      <CalculatedView
+        calculatedTaxData={calculatedTaxData}
+        loadingStatus={loadingStatus}
+      />
     </div>
   );
 
