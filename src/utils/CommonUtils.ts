@@ -5,22 +5,6 @@ declare const USE_MOCK_DATA: string;
 // check if environment is mocked
 export const isMocked: boolean = USE_MOCK_DATA.toString() === 'true' || false;
 
-// check if value is a valid number
-export const isANumber = (value: string | number): boolean => {
-  // make sure its not null and also not 0, else !value will give true if 0
-  if (!value && value !== 0) {
-    return false;
-  }
-  // check for Infinity separately, below regex won't check for Infinity
-  if (value === Infinity || value === -Infinity || typeof value === 'number') {
-    return true;
-  }
-  // return !Number.isNaN(parseFloat(value.toString()));
-  // regex to all negative and postive numbers with decimal places
-  // does not handle infinity
-  return /^(?!-0?(\.0+)?$)-?(0|[1-9]\d*)?(\.\d+)?(?<=\d)$/.test(value.toString());
-};
-
 // universal check for null, empty objects, arrays and values
 export const isNullOrEmpty = (value: any) => {
   // if type is number, then its never null

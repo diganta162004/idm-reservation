@@ -4,46 +4,8 @@ import {
   isLoading,
   isNotYetStarted,
   isNullOrEmpty,
-  isANumber,
 } from '../../src/utils/CommonUtils';
 import { LOADING_STATUS } from '../../src/statics/enums';
-
-describe(
-  'CommonUtils: isANumber', () => {
-    test(
-      'positive cases', () => {
-        expect(isANumber(100)).toEqual(true);
-        expect(isANumber('100')).toEqual(true);
-        expect(isANumber(0)).toEqual(true);
-        expect(isANumber(-0)).toEqual(true);
-        expect(isANumber('100.02312')).toEqual(true);
-        expect(isANumber(100.35)).toEqual(true);
-        expect(isANumber(-100)).toEqual(true);
-        expect(isANumber(-100.35)).toEqual(true);
-        expect(isANumber(10.000)).toEqual(true);
-        expect(isANumber(0.001)).toEqual(true);
-        expect(isANumber(0.00)).toEqual(true);
-        expect(isANumber(Infinity)).toEqual(true);
-        expect(isANumber(-Infinity)).toEqual(true);
-      },
-    );
-    test(
-      'negative cases', () => {
-        expect(isANumber(null)).toEqual(false);
-        expect(isANumber(undefined)).toEqual(false);
-        expect(isANumber()).toEqual(false);
-        expect(isANumber('abc')).toEqual(false);
-        expect(isANumber('a100.123')).toEqual(false);
-        expect(isANumber('100.12a3')).toEqual(false);
-        expect(isANumber('100.123a')).toEqual(false);
-        expect(isANumber('100.12.12')).toEqual(false);
-        expect(isANumber(false)).toEqual(false);
-        expect(isANumber(true)).toEqual(false);
-        expect(isANumber('0000.001')).toEqual(false);
-      },
-    );
-  },
-);
 
 describe(
   'CommonUtils: isNullOrEmpty', () => {

@@ -2,7 +2,8 @@ import {
   BracketsType,
   CalculatedTaxBreakdownType, CalculatedTaxType, TaxBracketsType,
 } from '../types/taxTypes';
-import { isANumber, isNullOrEmpty } from './CommonUtils';
+import { isNullOrEmpty } from './CommonUtils';
+import { isANumber } from './NumberUtils';
 
 // parse API data before storing in local state, sets type
 export const parseTaxBracketsApiData = (apiData: any): TaxBracketsType => {
