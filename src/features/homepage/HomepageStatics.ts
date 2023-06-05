@@ -2,7 +2,7 @@ export const HOMEPAGE_STATICS = {
   TITLE: 'Calculate your tax',
   YEAR_SELECT: {
     label: 'Select financial year',
-    placeholder: 'Select year',
+    placeholder: 'Select financial year',
     defaultValue: '2022',
     options: [{
       id: '2019',

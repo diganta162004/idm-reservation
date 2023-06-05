@@ -44,8 +44,8 @@ const styles = {
 const InputView = (props: Props) => {
   const { loadingStatus, onCalculateClick } = props;
 
-  const [yearValue, setYearValue] = useState<string>('2022');
-  const [incomeValue, setIncomeValue] = useState<string>('500000');
+  const [yearValue, setYearValue] = useState<string>('');
+  const [incomeValue, setIncomeValue] = useState<string>('');
 
   const onYearChange = useCallback(
     (
