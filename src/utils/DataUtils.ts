@@ -5,7 +5,14 @@ import {
 import { isNullOrEmpty } from './CommonUtils';
 import { isANumber } from './NumberUtils';
 
-// parse API data before storing in local state, sets type
+/**
+ * Parse api data to a fixed type state for storing in state
+ *
+ * Used in data hook
+ *
+ * @param {any} apiData the raw tax brackets api data
+ * @return {TaxBracketsType} valid TaxBracketsType object with missing keys
+ */
 export const parseTaxBracketsApiData = (apiData: any): TaxBracketsType => {
   try {
     if (!isNullOrEmpty(apiData?.tax_brackets)) {
@@ -21,7 +28,15 @@ export const parseTaxBracketsApiData = (apiData: any): TaxBracketsType => {
   return [];
 };
 
-// calculates tax for individual bracket
+/**
+ * Calculates tax for a given bracket data and income amount
+ *
+ * Used in other util function
+ *
+ * @param {BracketsType} bracket bracket data based on what the tax will be calculated
+ * @param {number} totalIncome total income on which the tax will be calculated
+ * @return {number} tax amount
+ */
 export const calculateTaxForBracket = (
   bracket: BracketsType, totalIncome: number,
 ): number => {
@@ -41,7 +56,15 @@ export const calculateTaxForBracket = (
   }
 };
 
-// gets individual breakdown of taxes for brackets
+/**
+ * Calculates tax for a set of brackets (entire range of income)
+ *
+ * Used in data util
+ *
+ * @param {TaxBracketsType} bracketData bracket data based on what the tax will be calculated
+ * @param {number} totalIncome total income on which the tax will be calculated
+ * @return {CalculatedTaxType} object with total tax and bracket breakdown
+ */
 export const calculateTaxBreakdownForYear = (
   bracketData: TaxBracketsType, income: number,
 ): CalculatedTaxType => {
@@ -63,7 +86,15 @@ export const calculateTaxBreakdownForYear = (
   });
 };
 
-// calculates overall percentage based on entire income
+/**
+ * Calculates overall percentage based on entire income
+ *
+ * Used in render views
+ *
+ * @param {number|string} totalIncome total income on which the tax will be calculated
+ * @param {number|string} taxAmount tax amount already calculated
+ * @return {number} net tax percentage
+ */
 export const calculateNetPercentage = (
   totalIncome: number|string, taxAmount: number|string,
 ): number => {
