@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
 import {
-  Button,
-  CircularProgress, Divider, Link,
+  CircularProgress,
+  Divider,
+  Link,
   Table,
   Typography,
 } from '@mui/joy';
 import stringTemplate from 'string-template';
 
-import { OpenInNew } from '@mui/icons-material';
 import {
   isFailed,
   isLoading,

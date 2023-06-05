@@ -22,6 +22,7 @@ const UseLoggerProvider = ({ children }: Props) => {
     (
       source: string, message: string,
     ) => {
+      // temporary implementation using console output
       console.log(`Logger Service info: Source: ${source}, error: ${message}`);
     }, [],
   );
@@ -30,6 +31,7 @@ const UseLoggerProvider = ({ children }: Props) => {
     (
       source: string, message: string,
     ) => {
+      // temporary implementation using console output
       console.warn(`Logger Service info: Source: ${source}, error: ${message}`);
     }, [],
   );
@@ -38,6 +40,7 @@ const UseLoggerProvider = ({ children }: Props) => {
     (
       source: string, message: string, errorObject: Error,
     ) => {
+      // temporary implementation using console output
       console.error(`Logger Service info: Source: ${source}, message: ${message} error: ${errorObject.message || JSON.stringify(errorObject)}`);
     }, [],
   );

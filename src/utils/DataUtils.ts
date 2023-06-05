@@ -4,6 +4,7 @@ import {
 } from '../types/taxTypes';
 import { isANumber, isNullOrEmpty } from './CommonUtils';
 
+// parse API data before storing in local state, sets type
 export const parseTaxBracketsApiData = (apiData: any): TaxBracketsType => {
   try {
     if (!isNullOrEmpty(apiData?.tax_brackets)) {
@@ -19,6 +20,7 @@ export const parseTaxBracketsApiData = (apiData: any): TaxBracketsType => {
   return [];
 };
 
+// calculates tax for individual bracket
 export const calculateTaxForBracket = (
   bracket: BracketsType, totalIncome: number,
 ): number => {
@@ -38,6 +40,7 @@ export const calculateTaxForBracket = (
   }
 };
 
+// gets individual breakdown of taxes for brackets
 export const calculateTaxBreakdownForYear = (
   bracketData: TaxBracketsType, income: number,
 ): CalculatedTaxType => {
@@ -59,6 +62,7 @@ export const calculateTaxBreakdownForYear = (
   });
 };
 
+// calculates overall percentage based on entire income
 export const calculateNetPercentage = (
   totalIncome: number|string, taxAmount: number|string,
 ): number => {

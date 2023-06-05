@@ -1,3 +1,4 @@
+// gets value with fixed decimal places
 export const toFixedDecimalPlaces = (
   value: string | number, decimalPlaces: number = 2,
 ): number | string => {
@@ -7,6 +8,7 @@ export const toFixedDecimalPlaces = (
   return Number.parseFloat(value.toString()).toFixed(decimalPlaces);
 };
 
+// formats currency to comma seperated with fixed decimal places
 export const formatCurrency = (
   value: string | number, decimalPlaces: number = 2,
 ): string => {

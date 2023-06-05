@@ -13,9 +13,9 @@ import { isLoading } from '../../utils/CommonUtils';
 import { CalculatedTaxType } from '../../types/taxTypes';
 import { HOMEPAGE_STATICS } from './HomepageStatics';
 import { InputView } from './InputView';
+import { CalculatedView } from './CalculatedView';
 
 import './home-page.scss';
-import { CalculatedView } from './CalculatedView';
 
 const styles = {
   container: 'pgtc__home-page__container',
@@ -39,6 +39,8 @@ const HomePage = () => {
   const [loadingStatus, setLoadingStatus] = useState<LOADING_STATUS>(LOADING_STATUS.NOT_YET_STARTED);
   const [calculatedTaxData, setCalculatedTaxData] = useState<CalculatedTaxType>(DEFAULT_TAX_CALCULATED_VALUE);
 
+  // gets data from hook and stores in local storage
+  // locally keeps loading status
   const onCalculateClick = useCallback(
     (
       incomeValue: string, yearValue: string,
@@ -53,7 +55,7 @@ const HomePage = () => {
         setCalculatedTaxData(res);
         setLoadingStatus(LOADING_STATUS.COMPLETED);
       }).catch(() => {
-        setCalculatedTaxData(DEFAULT_TAX_CALCULATED_VALUE);
+        // setCalculatedTaxData(DEFAULT_TAX_CALCULATED_VALUE);
         setLoadingStatus(LOADING_STATUS.FAILED);
       });
     }, [calculateTax],

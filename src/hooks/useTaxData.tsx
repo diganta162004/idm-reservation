@@ -45,6 +45,7 @@ const UseTaxDataProvider = ({ children }: Props) => {
       resolve, reject,
     ) => {
       try {
+        // check if exist in cache
         if (taxBracketsData[yearValue]) {
           const calculatedTaxBreakdown: CalculatedTaxType = calculateTaxBreakdownForYear(
             taxBracketsData[yearValue], Number(incomeValue),
@@ -56,6 +57,7 @@ const UseTaxDataProvider = ({ children }: Props) => {
 
           return;
         }
+        // if doesnt exist in cache
         apiGet(
           API_URLS.GET_TAX_DATA_FOR_YEAR, {
             year: yearValue,

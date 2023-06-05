@@ -56,6 +56,7 @@ const InputView = (props: Props) => {
     error: '',
   });
 
+  // validates both field
   const validateValues = useCallback(
     () => {
       setYearValue((prevState) => ({
@@ -92,6 +93,7 @@ const InputView = (props: Props) => {
     }, [],
   );
 
+  // calls parent function with local form variables
   const onCalculateLocal = useCallback(
     () => {
       validateValues();
