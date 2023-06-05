@@ -11,6 +11,6 @@ module.exports = {
     '^.+\\.(css|scss)$': '<rootDir>/__test__/styleMock.js',
   },
   globals: {
-    USE_MOCK_DATA: false,
+    USE_MOCK_DATA: true,
   },
 };

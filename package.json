@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watch --verbose",
+    "test:watch": "jest --watch --verbose -t App.tsx",
     "start": "webpack serve --env=mode=development --env=USE_MOCK_DATA=true",
     "start:dev": "webpack serve --env=mode=development",
     "build": "webpack --env=mode=production"

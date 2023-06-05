@@ -110,7 +110,6 @@ const UseApiProvider = (props: Props) => {
 
 UseApiProvider.defaultProps = {
   isMocked: false,
-  mockData: {},
 };
 
 export {
