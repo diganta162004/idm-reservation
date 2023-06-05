@@ -1,25 +1,17 @@
 import React, {
   useCallback,
-  useMemo,
   useState,
 } from 'react';
 import {
   Card,
-  CircularProgress,
-  Table,
   Typography,
 } from '@mui/joy';
 
-import stringTemplate from 'string-template';
 import { DEFAULT_TAX_CALCULATED_VALUE, useTaxData } from '../../hooks/useTaxData';
 import { LOADING_STATUS } from '../../statics/enums';
-import {
-  isCompleted, isFailed, isLoading, isNotYetStarted,
-} from '../../utils/CommonUtils';
-import { CalculatedTaxBreakdownType, CalculatedTaxType } from '../../types/taxTypes';
+import { isLoading } from '../../utils/CommonUtils';
+import { CalculatedTaxType } from '../../types/taxTypes';
 import { HOMEPAGE_STATICS } from './HomepageStatics';
-import { calculateNetPercentage } from '../../utils/DataUtils';
-import { formatCurrency, toFixedDecimalPlaces } from '../../utils/NumberUtils';
 import { InputView } from './InputView';
 
 import './home-page.scss';

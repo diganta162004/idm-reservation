@@ -5,8 +5,8 @@ import {
   isNotYetStarted,
   isNullOrEmpty,
   isANumber,
-} from '../utils/CommonUtils';
-import { LOADING_STATUS } from '../statics/enums';
+} from '../../src/utils/CommonUtils';
+import { LOADING_STATUS } from '../../src/statics/enums';
 
 describe(
   'CommonUtils: isANumber', () => {

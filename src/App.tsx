@@ -1,5 +1,4 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
 
 import { UseApiProvider } from './hooks/useApi';
 import { isMocked } from './utils/CommonUtils';
@@ -29,5 +28,7 @@ class App extends React.PureComponent <Props, State> {
   }
 }
 
-const root = createRoot(document.getElementById('root') as Element);
-root.render(<App />);
+export default App;
+//
+// const root = createRoot(document.getElementById('root') as Element);
+// root.render(<App />);

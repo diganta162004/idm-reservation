@@ -1,6 +1,6 @@
 import {
   calculateNetPercentage, calculateTaxBreakdownForYear, calculateTaxForBracket, parseTaxBracketsApiData,
-} from '../utils/DataUtils';
+} from '../../src/utils/DataUtils';
 
 describe(
   'DataUtils: parseTaxBracketsApiData', () => {
