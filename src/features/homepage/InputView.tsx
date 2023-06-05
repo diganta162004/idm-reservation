@@ -14,6 +14,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import { HOMEPAGE_STATICS } from './HomepageStatics';
 import { isLoading } from '../../utils/CommonUtils';
 import { LOADING_STATUS } from '../../statics/enums';
+import { InputValueType } from '../../types/CommonTypes';
 
 import './input-view.scss';
 
@@ -44,30 +45,62 @@ const styles = {
 const InputView = (props: Props) => {
   const { loadingStatus, onCalculateClick } = props;
 
-  const [yearValue, setYearValue] = useState<string>('');
-  const [incomeValue, setIncomeValue] = useState<string>('');
+  const [yearValue, setYearValue] = useState<InputValueType>({
+    isTouched: false,
+    value: '',
+    error: '',
+  });
+  const [incomeValue, setIncomeValue] = useState<InputValueType>({
+    isTouched: false,
+    value: '',
+    error: '',
+  });
+
+  const validateValues = useCallback(
+    () => {
+      setYearValue((prevState) => ({
+        ...prevState,
+        error: prevState.value ? '' : HOMEPAGE_STATICS.YEAR_SELECT.ERRORS.required,
+      }));
+      setIncomeValue((prevState) => ({
+        ...prevState,
+        error: prevState.value ? '' : HOMEPAGE_STATICS.INPUT_INCOME.ERRORS.required,
+      }));
+    }, [],
+  );
 
   const onYearChange = useCallback(
     (
       event: React.SyntheticEvent | null,
       newValue: string | null,
     ) => {
-      setYearValue(newValue!);
+      setYearValue({
+        value: newValue || '',
+        isTouched: true,
+        error: '',
+      });
     }, [],
   );
 
   const onIncomeValueChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setIncomeValue(e.target.value);
+      setIncomeValue({
+        value: e.target.value,
+        isTouched: true,
+        error: '',
+      });
     }, [],
   );
 
   const onCalculateLocal = useCallback(
     () => {
-      onCalculateClick(
-        incomeValue, yearValue,
-      );
-    }, [incomeValue, yearValue],
+      validateValues();
+      if (incomeValue.value && yearValue.value) {
+        onCalculateClick(
+          incomeValue.value, yearValue.value,
+        );
+      }
+    }, [incomeValue, yearValue, validateValues],
   );
 
   const getYearSelect = () => (
@@ -84,7 +117,7 @@ const InputView = (props: Props) => {
         placeholder={HOMEPAGE_STATICS.YEAR_SELECT.placeholder}
         defaultValue={HOMEPAGE_STATICS.YEAR_SELECT.defaultValue}
         onChange={onYearChange}
-        value={yearValue}
+        value={yearValue.value}
       >
         {HOMEPAGE_STATICS.YEAR_SELECT.options.map((item) => (
           <Option
@@ -95,6 +128,14 @@ const InputView = (props: Props) => {
           </Option>
         ))}
       </Select>
+      {yearValue.error && (
+      <Typography
+        fontSize="sm"
+        color="danger"
+      >
+        {yearValue.error}
+      </Typography>
+      )}
     </div>
   );
 
@@ -113,9 +154,18 @@ const InputView = (props: Props) => {
         endDecorator={
           <Typography>{HOMEPAGE_STATICS.INPUT_INCOME.endDecorator}</Typography>
         }
+        type="number"
         onChange={onIncomeValueChange}
-        value={incomeValue}
+        value={incomeValue.value}
       />
+      {incomeValue.error && (
+      <Typography
+        fontSize="sm"
+        color="danger"
+      >
+        {incomeValue.error}
+      </Typography>
+      )}
     </div>
   );
 

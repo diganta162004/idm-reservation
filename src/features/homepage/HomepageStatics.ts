@@ -17,11 +17,17 @@ export const HOMEPAGE_STATICS = {
       id: '2022',
       name: '2022',
     }],
+    ERRORS: {
+      required: 'Select a financial year',
+    },
   },
   INPUT_INCOME: {
     label: 'Enter total income per annum',
     placeholder: 'Enter total income',
     endDecorator: 'p.a.',
+    ERRORS: {
+      required: 'Enter an amount',
+    },
   },
   CALCULATE_BUTTON: {
     label: 'Calculate',
