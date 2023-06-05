@@ -1,4 +1,6 @@
-# pg-tax-calculator
+# Tax Calculator
+
+This project showcases a straightforward tax calculator that relies on the user's chosen financial year and income. Its primary objective is to illustrate various architectural possibilities and coding styles.
 
 ## Running the project
 
