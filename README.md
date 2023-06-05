@@ -7,6 +7,9 @@
 npm run start
 ```
 
+Open URL
+http://localhost:8080/
+
 ### Start with local dev
 Local dev server port can be set in webpack.config.js inside devServer.proxy
 
