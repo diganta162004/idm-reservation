@@ -30,7 +30,7 @@ module.exports = (env) => ({
     port: PORT,
     hot: true,
     proxy: {
-      '/tax-calculator': {
+      '/api': {
         target: 'http://localhost:5001',
         secure: false,
         changeOrigin: false,

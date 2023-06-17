@@ -1,5 +1,5 @@
 {
-  "name": "pg-tax-calculator",
+  "name": "idm-reservation",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,16 +12,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:diganta162004/pg-tax-calculator.git"
+    "url": "git@github.com:diganta162004/idm-reservation.git"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@emotion/react": "^11.11.0",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.11.16",
-    "@mui/joy": "^5.0.0-alpha.82",
-    "@mui/material": "^5.13.3",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",
     "query-string": "^8.1.0",

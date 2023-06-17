@@ -2,8 +2,6 @@ import React from 'react';
 
 import { UseApiProvider } from './hooks/useApi';
 import { isMocked } from './utils/CommonUtils';
-import { HomePage } from './features/homepage/HomePage';
-import { UseTaxDataProvider } from './hooks/useTaxData';
 import { UseLoggerProvider } from './utils/UseLogger';
 
 import '../app.scss';
@@ -19,9 +17,7 @@ class App extends React.PureComponent <Props, State> {
         <UseApiProvider
           isMocked={isMocked}
         >
-          <UseTaxDataProvider>
-            <HomePage />
-          </UseTaxDataProvider>
+          <div>App Page</div>
         </UseApiProvider>
       </UseLoggerProvider>
     );

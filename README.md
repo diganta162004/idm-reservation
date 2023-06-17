@@ -1,6 +1,6 @@
-# Tax Calculator
+# IDM Reservation
 
-This project showcases a straightforward tax calculator that relies on the user's chosen financial year and income. Its primary objective is to illustrate various architectural possibilities and coding styles.
+This project showcases a straightforward reservation site and provide basic CRUD operations. Its primary objective is to illustrate various architectural possibilities and coding styles.
 
 ## Running the project
 
