@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 
 import './search-page.scss';
 import { useReservation } from '../../hooks/useReservation';
+import { SearchBar } from './SearchBar';
 
 type Props = {
     id?: string,
@@ -19,11 +20,11 @@ const SearchPage = (props: Props) => {
     searchReservationByEmail,
   } = useReservation();
 
-  useEffect(
-    () => {
-      searchReservationByEmail('email@email.com').then((data) => {
+  const onSearchClick = useCallback(
+    (searchEmail: string) => {
+      searchReservationByEmail(searchEmail).then((results) => {
         console.log(
-          'RESULTS', data,
+          'RESULTS', results,
         );
       });
     }, [searchReservationByEmail],
@@ -31,10 +32,7 @@ const SearchPage = (props: Props) => {
 
   return (
     <div className={styles.container}>
-      Search Page
-      <div>
-        {JSON.stringify(reservationList)}
-      </div>
+      <SearchBar onSearchClick={onSearchClick} />
     </div>
   );
 };
