@@ -6,3 +6,5 @@ export type ReservationType = {
 };
 
 export type ReservationDictionary = Record<string, ReservationType[]>
+
+export type ReservationList = Record<string, ReservationType>

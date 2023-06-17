@@ -1,12 +1,13 @@
 import React, {
   createContext, useCallback, useContext, useMemo, useState,
 } from 'react';
-import { ReservationDictionary, ReservationType } from '../types/ReservationTypes';
+import {
+  ReservationDictionary, ReservationList, ReservationType,
+} from '../types/ReservationTypes';
 import { useApi } from './useApi';
-import { LOADING_STATUS } from '../statics/enums';
-import { isLoading } from '../utils/CommonUtils';
 import { API_URLS } from '../statics/apiUrls';
 import { parseSearchResultsForState } from '../utils/DataUtils';
+import { useLogger } from '../utils/UseLogger';
 
 type Props = {
   children: React.ReactNode,
@@ -14,42 +15,51 @@ type Props = {
 
 interface UseReservationType {
   reservationList: ReservationDictionary,
-  searchReservationByEmail: (email: string) => void,
+  searchReservationByEmail: (email: string) => Promise<ReservationList>,
 }
 
 const UseReservationContext = createContext<UseReservationType>({
   reservationList: {},
-  searchReservationByEmail: () => {},
+  searchReservationByEmail: () => Promise.resolve({}),
 });
 
 const useReservation = () => useContext(UseReservationContext);
 
 const UseReservationProvider = ({ children }: Props) => {
   const [reservationList, setReservationList] = useState<ReservationDictionary>({});
-  const [searchStatus, setSearchStatus] = useState<LOADING_STATUS>(LOADING_STATUS.NOT_YET_STARTED);
 
   const { apiGet } = useApi();
+  const { error } = useLogger();
 
   const searchReservationByEmail = useCallback(
-    (searchEmail: string) => {
-      if (isLoading(searchStatus)) {
+    (searchEmail: string): Promise<ReservationList> => new Promise((
+      resolve, reject,
+    ) => {
+      if (reservationList[searchEmail]) {
+        Promise.resolve(reservationList[searchEmail]);
         return;
       }
       apiGet(
         API_URLS.SEARCH_RESERVATIONS, {}, {
           email: searchEmail,
         },
-      ).then((responseData) => {
-        const parsedSearchResult: Record<string, ReservationType> = parseSearchResultsForState(responseData.data);
+      ).then((responseData: any) => {
+        const parsedSearchResult: Record<string, ReservationType> = parseSearchResultsForState(responseData?.data);
         setReservationList((prevData) => ({
-          ...reservationList,
+          ...prevData,
           [searchEmail]: {
-            ...reservationList[searchEmail],
+            ...prevData[searchEmail],
             ...parsedSearchResult,
           },
         }));
+        resolve(parsedSearchResult);
+      }).catch((e) => {
+        error(
+          'useReservation: searchReservationByEmail', 'Error in fetching search results', e,
+        );
+        reject();
       });
-    }, [searchStatus],
+    }), [reservationList],
   );
 
   const contextValue = useMemo(

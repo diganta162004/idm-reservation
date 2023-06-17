@@ -21,7 +21,11 @@ const SearchPage = (props: Props) => {
 
   useEffect(
     () => {
-      searchReservationByEmail('email@email.com');
+      searchReservationByEmail('email@email.com').then((data) => {
+        console.log(
+          'RESULTS', data,
+        );
+      });
     }, [searchReservationByEmail],
   );
 
